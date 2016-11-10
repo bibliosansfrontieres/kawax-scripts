@@ -25,6 +25,8 @@ PACKAGE_CACHE_OTHER=${PACKAGE_CACHE}/other/
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
 WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
 
+# long options translated from the kiwix mirroring one-liner
+RSYNC_OPTIONS="--compress --recursive --links --perms --times --devices --specials --delete"
 
 #
 # functions
@@ -77,19 +79,19 @@ update_catalogs() {
 }
 
 rsync_kiwix() {
-    sed -i -e 's@_20[0-9][0-9]-[0-9][0-9]\.zip@@g;s@http://download.kiwix.org/portable/@@g' $URLS_KIWIX
-    # FIXME: make it silent, log somewhere.
-    rsync -vzrlptD --delete --files-from=$URL_KIWIX \
+    sed -i -e 's@http://download.kiwix.org/portable/@@g' $URLS_KIWIX
+    # FIXME: log somewhere
+    rsync $RSYNC_OPTIONS --files-from=$URLS_KIWIX \
         download.kiwix.org::download.kiwix.org/portable/ ${PACKAGE_CACHE_KIWIX}
 }
 
 wget_other() {
-    # FIXME: this is a placeholder. It will download the entire internet into your fridge.
+    # FIXME: log somewhere
     wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/
 }
 
 extract_urls() {
-    rm -f URLS_KIWIX $URLS_OTHER
+    rm -f $URLS_KIWIX $URLS_OTHER
     for thiscatalog in $( find $CATALOGS_CACHE -type f -name '*.yml' ) ; do
         edebug "Getting URLs from ${thiscatalog}..."
         while read thisline ; do
