@@ -19,6 +19,10 @@ URLS_OTHER=/var/kawax/others.wget
 
 PACKAGE_CACHE=/srv/kawax
 
+WGET_USERAGENT="Mirroring/catalog.ideascube.org"
+WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
+
+
 #
 # functions
 #
@@ -77,7 +81,7 @@ rsync_kiwix() {
 
 wget_other() {
     # FIXME: this is a placeholder. It will download the entire internet into your fridge.
-    wget http://example.com/ -O /dev/null
+    wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/
 }
 
 extract_urls() {
