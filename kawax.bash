@@ -18,6 +18,9 @@ URLS_KIWIX=/var/kawax/kiwix.rsync
 URLS_OTHER=/var/kawax/others.wget
 
 PACKAGE_CACHE=/srv/kawax
+PACKAGE_CACHE_KIWIX=${PACKAGE_CACHE}/download.kiwix.org/
+PACKAGE_CACHE_OTHER=${PACKAGE_CACHE}/other/
+
 
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
 WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
@@ -76,7 +79,7 @@ update_catalogs() {
 rsync_kiwix() {
     # FIXME: make it silent, log somewhere.
     rsync -vzrlptD --delete --files-from=$URL_KIWIX \
-        download.kiwix.org::download.kiwix.org/portable/ ${PACKAGE_CACHE}/download.kiwix.org/
+        download.kiwix.org::download.kiwix.org/portable/ ${PACKAGE_CACHE_KIWIX}
 }
 
 wget_other() {
@@ -105,7 +108,7 @@ extract_urls() {
 
 
 # init
-mkdir -p $CATALOGS_CACHE
+mkdir -p $CATALOGS_CACHE $PACKAGE_CACHE_KIWIX $PACKAGE_CACHE_OTHER
 
 
 case "$1" in
