@@ -77,6 +77,7 @@ update_catalogs() {
 }
 
 rsync_kiwix() {
+    sed -i -e 's@_20[0-9][0-9]-[0-9][0-9]\.zip@@g;s@http://download.kiwix.org/portable/@@g' $URLS_KIWIX
     # FIXME: make it silent, log somewhere.
     rsync -vzrlptD --delete --files-from=$URL_KIWIX \
         download.kiwix.org::download.kiwix.org/portable/ ${PACKAGE_CACHE_KIWIX}
@@ -101,7 +102,6 @@ extract_urls() {
                 echo $thisurl >> $URLS_OTHER
             fi
         done < $thiscatalog
-
     done
 }
 
