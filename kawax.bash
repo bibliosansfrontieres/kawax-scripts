@@ -21,6 +21,7 @@ PACKAGE_CACHE=/srv/kawax
 PACKAGE_CACHE_KIWIX=${PACKAGE_CACHE}/download.kiwix.org/
 PACKAGE_CACHE_OTHER=${PACKAGE_CACHE}/other/
 
+SYNOLOGY_CACHE=/srv/synology
 
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
 WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
@@ -41,6 +42,7 @@ Actions:
     extract_urls        Extracts the URLs from catalogs to files
     rsync_kiwix         Downloads ZIMs from Kiwix
     wget_other          Downloads the other packages
+    rsync_synology      Updates the Synology cache
     all                 All of the above
     help                This very help message
 "
@@ -107,14 +109,17 @@ extract_urls() {
     done
 }
 
-
+rsync_synology() {
+    # FIXME: test the link before
+    rsync -av admin@10.10.8.9:'/volume1/Contenus-Educ/Gestion\ des\ contenus' ${SYNOLOGY_CACHE}/
+}
 
 # init
-mkdir -p $CATALOGS_CACHE $PACKAGE_CACHE_KIWIX $PACKAGE_CACHE_OTHER
+mkdir -p $CATALOGS_CACHE $PACKAGE_CACHE_KIWIX $PACKAGE_CACHE_OTHER $SYNOLOGY_CACHE
 
 
 case "$1" in
-    update_catalogs|extract_urls|rsync_kiwix|wget_other)
+    update_catalogs|extract_urls|rsync_kiwix|wget_other|rsync_synology)
         $1
         ;;
     all)
@@ -122,6 +127,7 @@ case "$1" in
         extract_urls
         rsync_kiwix
         wget_other
+        rsync_synology
         ;;
     help)
         show_usage
