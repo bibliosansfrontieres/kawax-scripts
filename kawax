@@ -111,7 +111,7 @@ extract_urls() {
 
 rsync_synology() {
     # FIXME: test the link before
-    rsync -av admin@10.10.8.9:'/volume1/Contenus-Educ/Gestion\ des\ contenus' ${SYNOLOGY_CACHE}/
+    rsync --delete -av admin@10.10.8.9:'/volume1/Contenus-Educ/Gestion\ des\ contenus' ${SYNOLOGY_CACHE}/
 }
 
 # init
