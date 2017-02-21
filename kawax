@@ -85,7 +85,7 @@ rsync_kiwix() {
     sed -i -e 's@http://download.kiwix.org/@@g' $URLS_KIWIX
     # FIXME: log somewhere
     rsync $RSYNC_OPTIONS --files-from=$URLS_KIWIX \
-        download.kiwix.org::download.kiwix.org/portable/ ${PACKAGE_CACHE_KIWIX}
+        download.kiwix.org::download.kiwix.org/ ${PACKAGE_CACHE_KIWIX}
 }
 
 wget_other() {
