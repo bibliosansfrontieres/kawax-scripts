@@ -25,6 +25,44 @@ Various paths and options can be tweaked at the beginning of the script.
         all                 All of the above
         help                This very help message
 
+#### Storytelling version
+
+Let's say we have a brand new machine, with an empty hard disk drive. Our
+needs are addresses by all these subcommands.
+
+So, we want to cache our downloads? But what do we want to download exactly?
+Let's grab the catalogs we are interested in:
+
+        $ kawax update_catalogs
+
+This one downloads the catalogs to the local disk.
+
+Ok, we have some complete catalogs, but we don't actually care about all these
+metadata. We are interested in URLs to download only.
+
+        $ kawax extract_urls
+
+This one extracts the URLs from the catalogs we just downloaded, and stores
+that into a file.
+
+Now we have a list of content to download, let's feed rsync with this file!
+Let's start with kiwix.org:
+
+        $ kawax rsync_kiwix
+
+At this point, we may get some 404 errors. It means that our `kiwix.yml` is
+outdated, and some entries there should be updated. After we updated this
+catalog from kiwix.org, we would have to run the three commands above again.
+
+Then, process the other catalogs content:
+
+        $ kawax wget_other
+
+And finally, let's clone our not-so-local fileserver right here:
+
+        $ kawax rsync_synology
+
+Done.
 
 ### Bonus
 
