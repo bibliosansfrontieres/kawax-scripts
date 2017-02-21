@@ -11,6 +11,7 @@ CATALOGS_CACHE=/var/kawax/catalogs
 CATALOGS=(
     http://catalog.ideascube.org/kiwix.yml
     http://catalog.ideascube.org/static-sites.yml
+    http://catalog.ideascube.org/bibliotecamovil.yml
     http://catalog.yohanboniface.me/catalog.yml
 )
 
