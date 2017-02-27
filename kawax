@@ -24,6 +24,9 @@ PACKAGE_CACHE_OTHER=${PACKAGE_CACHE}/other/
 
 SYNOLOGY_CACHE=/srv/synology
 
+SYNOLOGY_USER=admin
+SYNOLOGY_ADDR=10.10.8.9
+
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
 WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
 
@@ -112,7 +115,7 @@ extract_urls() {
 
 rsync_synology() {
     # FIXME: test the link before
-    rsync --delete -av admin@10.10.8.9:'/volume1/Contenus-Educ/Gestion\ des\ contenus' ${SYNOLOGY_CACHE}/
+    rsync --delete -av ${SYNOLOGY_USER}@${SYNOLOGY_ADDR}:'/volume1/Contenus-Educ/Gestion\ des\ contenus' ${SYNOLOGY_CACHE}/
 }
 
 # init
