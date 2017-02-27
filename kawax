@@ -24,7 +24,7 @@ PACKAGE_CACHE_OTHER=${PACKAGE_CACHE}/other/
 
 SYNOLOGY_CACHE=/srv/synology
 
-SYNOLOGY_USER=admin
+SYNOLOGY_USER=root
 SYNOLOGY_ADDR=10.10.8.9
 
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
