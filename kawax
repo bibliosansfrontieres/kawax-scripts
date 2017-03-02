@@ -28,6 +28,7 @@ SYNOLOGY_USER=root
 SYNOLOGY_ADDR=10.10.8.9
 
 KIWIX_LOGFILE="/tmp/rsync_kiwix_$( date +%Y%m%d%H%M%S ).log"
+ERRORS_MAILTO=tom@bibliosansfrontieres.org
 
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
 WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
@@ -92,7 +93,16 @@ rsync_kiwix() {
         download.kiwix.org::download.kiwix.org/ ${PACKAGE_CACHE_KIWIX} \
         --log-file=$KIWIX_LOGFILE --dry-run
     # TODO: if 404 then mailto
+    rsync_kiwix_report
     rm $KIWIX_LOGFILE
+}
+
+rsync_kiwix_report() {
+    echo "[+] Should I report? -> $FROM_CRONJOB"
+    [ -z "$FROM_CRONJOB" ] && return
+    echo "[+] sending report..."
+    awk ' /No such file or directory/ { print $3 } ' $KIWIX_LOGFILE \
+        | tr -d '"' | mail -s 'kawax rsync_kiwix errors' $ERRORS_MAILTO
 }
 
 wget_other() {
