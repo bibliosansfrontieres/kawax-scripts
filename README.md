@@ -68,7 +68,7 @@ And finally, let's clone our not-so-local fileserver right here:
 
 Done.
 
-### Bonus
+### errors reports
 
 Errors are features.
 
@@ -105,6 +105,14 @@ This error from `wget_other` underlines a package that has been
     Temps total effectif : 24m 6s
     Téléchargés : 15 fichiers, 12G en 24m 3s (8,31 MB/s)
 
+### cronjob
+
+The script checks the presence of a `FROM_CRONJOB` variable. If it is set,
+then the errors are mailed to `$ERRORS_MAILTO`.
+
+This is convenient for a cronjob for example:
+
+    43 4 * * *   root    FROM_CRONJOB=/etc/crontab /usr/local/bin/kawax all
 
 
 # vim: set tw=78:
