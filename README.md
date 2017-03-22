@@ -45,6 +45,10 @@ metadata. We are interested in URLs to download only.
 This one extracts the URLs from the catalogs we just downloaded, and stores
 that into a file.
 
+You usually don't need to run these two steps manually, because the
+`rsync_kiwix` and `wget_other` commands actually run `update_catalogs` and
+`extract_urls` as a first step.
+
 Now we have a list of content to download, let's feed rsync with this file!
 Let's start with kiwix.org:
 

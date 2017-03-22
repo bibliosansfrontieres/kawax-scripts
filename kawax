@@ -148,7 +148,12 @@ mkdir -p $CATALOGS_CACHE $PACKAGE_CACHE_KIWIX $PACKAGE_CACHE_OTHER $SYNOLOGY_CAC
 
 
 case "$1" in
-    update_catalogs|extract_urls|rsync_kiwix|wget_other|rsync_synology)
+    update_catalogs|extract_urls|rsync_synology)
+        $1
+        ;;
+    rsync_kiwix|wget_other)
+        update_catalogs
+        extract_urls
         $1
         ;;
     all)
