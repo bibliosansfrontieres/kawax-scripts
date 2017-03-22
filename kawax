@@ -27,6 +27,10 @@ SYNOLOGY_CACHE=/srv/synology
 SYNOLOGY_USER=root
 SYNOLOGY_ADDR=10.10.8.9
 
+KIWIX_LOGFILE="/tmp/rsync_kiwix_$( date +%Y%m%d%H%M%S ).log"
+WGET_LOGFILE="/tmp/wget_other_$( date +%Y%m%d%H%M%S ).log"
+ERRORS_MAILTO=it@bibliosansfrontieres.org
+
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
 WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
 
@@ -86,14 +90,34 @@ update_catalogs() {
 
 rsync_kiwix() {
     sed -i -e 's@http://download.kiwix.org/@@g' $URLS_KIWIX
-    # FIXME: log somewhere
     rsync $RSYNC_OPTIONS --files-from=$URLS_KIWIX \
-        download.kiwix.org::download.kiwix.org/ ${PACKAGE_CACHE_KIWIX}
+        download.kiwix.org::download.kiwix.org/ ${PACKAGE_CACHE_KIWIX} \
+        --log-file=$KIWIX_LOGFILE --dry-run
+    # TODO: if 404 then mailto
+    rsync_kiwix_report
+    rm $KIWIX_LOGFILE
+}
+
+rsync_kiwix_report() {
+    edebug "Should I report? -> $FROM_CRONJOB"
+    [ -z "$FROM_CRONJOB" ] && return
+    edebug "sending report..."
+    awk ' /No such file or directory/ { print $6 } ' $KIWIX_LOGFILE \
+        | tr -d '"' | mail -s 'kawax rsync_kiwix errors' $ERRORS_MAILTO
 }
 
 wget_other() {
-    # FIXME: log somewhere
-    wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/
+    # FIXME: the logfile should be parsed using some awk-fu to summarize the errors.
+    wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/ \
+        --output-file=$WGET_LOGFILE
+    [ "$?" != 0 ] && wget_other_report
+}
+
+wget_other_report() {
+    edebug "Should I report? -> $FROM_CRONJOB"
+    [ -z "$FROM_CRONJOB" ] && return
+    edebug "sending report..."
+    cat $WGET_LOGFILE | mail -s 'kawax wget_other errors' $ERRORS_MAILTO
 }
 
 extract_urls() {
