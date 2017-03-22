@@ -102,7 +102,7 @@ rsync_kiwix_report() {
     edebug "Should I report? -> $FROM_CRONJOB"
     [ -z "$FROM_CRONJOB" ] && return
     edebug "sending report..."
-    awk ' /No such file or directory/ { print $3 } ' $KIWIX_LOGFILE \
+    awk ' /No such file or directory/ { print $6 } ' $KIWIX_LOGFILE \
         | tr -d '"' | mail -s 'kawax rsync_kiwix errors' $ERRORS_MAILTO
 }
 
