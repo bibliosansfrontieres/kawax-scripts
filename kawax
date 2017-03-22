@@ -29,7 +29,7 @@ SYNOLOGY_ADDR=10.10.8.9
 
 KIWIX_LOGFILE="/tmp/rsync_kiwix_$( date +%Y%m%d%H%M%S ).log"
 WGET_LOGFILE="/tmp/wget_other_$( date +%Y%m%d%H%M%S ).log"
-ERRORS_MAILTO=tom@bibliosansfrontieres.org
+ERRORS_MAILTO=it@bibliosansfrontieres.org
 
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
 WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
