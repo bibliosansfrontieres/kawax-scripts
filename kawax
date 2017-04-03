@@ -98,9 +98,8 @@ rsync_kiwix() {
 }
 
 rsync_kiwix_report() {
-    edebug "Should I report? -> $FROM_CRONJOB"
     [ -z "$FROM_CRONJOB" ] && return
-    edebug "sending report..."
+    edebug "sending report... (\$FROM_CRONJOB is set to ${FROM_CRONJOB})"
     awk ' /No such file or directory/ { print $6 } ' $KIWIX_LOGFILE \
         | tr -d '"' | mail -s 'kawax rsync_kiwix errors' $ERRORS_MAILTO
 }
@@ -113,9 +112,8 @@ wget_other() {
 }
 
 wget_other_report() {
-    edebug "Should I report? -> $FROM_CRONJOB"
     [ -z "$FROM_CRONJOB" ] && return
-    edebug "sending report..."
+    edebug "sending report... (\$FROM_CRONJOB is set to ${FROM_CRONJOB})"
     cat $WGET_LOGFILE | mail -s 'kawax wget_other errors' $ERRORS_MAILTO
 }
 
