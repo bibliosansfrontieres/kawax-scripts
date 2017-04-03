@@ -109,6 +109,7 @@ wget_other() {
     wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/ \
         --output-file=$WGET_LOGFILE
     [ "$?" != 0 ] && wget_other_report
+    rm $WGET_LOGFILE
 }
 
 wget_other_report() {
