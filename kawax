@@ -94,7 +94,7 @@ rsync_kiwix() {
         download.kiwix.org::download.kiwix.org/ ${PACKAGE_CACHE_KIWIX} \
         --log-file=$KIWIX_LOGFILE
     rsync_kiwix_report
-    rm $KIWIX_LOGFILE
+    [[ $DEBUGMODE -eq 1 ]] || rm $KIWIX_LOGFILE
 }
 
 rsync_kiwix_report() {
@@ -109,7 +109,7 @@ wget_other() {
     wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/ \
         --output-file=$WGET_LOGFILE
     [ "$?" != 0 ] && wget_other_report
-    rm $WGET_LOGFILE
+    [[ $DEBUGMODE -eq 1 ]] || rm $WGET_LOGFILE
 }
 
 wget_other_report() {
