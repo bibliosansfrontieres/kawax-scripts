@@ -114,5 +114,12 @@ This is convenient for a cronjob for example:
 
     43 4 * * *   root    FROM_CRONJOB=/etc/crontab /usr/local/bin/kawax all
 
+### configuration
+
+The configuration is at the beginning of the script. Some variables can be set
+from the command line, using environment variables:
+
+    $ DEBUGMODE=1 kawax --help
+    $ ERRORS_MAILTO=nixon@fbi.gov kawax rsync-kiwix
 
 # vim: set tw=78:
