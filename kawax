@@ -122,7 +122,7 @@ extract_urls() {
     for thiscatalog in $( find $CATALOGS_CACHE -type f -name '*.yml' ) ; do
         edebug "Getting URLs from ${thiscatalog}..."
         while read thisline ; do
-            thisurl=$( echo $thisline | awk ' /url:/ { print $2 }' | tr -d '"' )
+            thisurl=$( echo $thisline | awk ' /url:/ { print $2 }' | tr -d [\'\"] )
             if [[ "$thisurl" =~ "http://download.kiwix.org" ]] ; then
                 edebug "thisurl->kiwix-> $thisurl"
                 echo $thisurl >> $URLS_KIWIX
