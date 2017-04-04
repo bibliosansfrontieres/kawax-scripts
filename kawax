@@ -74,7 +74,7 @@ get_latest_zims_from_kiwix() {
 update_catalogs() {
     for i in ${CATALOGS[@]} ; do
         edebug $i
-        wget $i -q -x -P ${CATALOGS_CACHE}/
+        wget $i --quiet --force-directories --directory-prefix ${CATALOGS_CACHE}/
     done
 }
 
