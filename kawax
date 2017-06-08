@@ -98,7 +98,8 @@ wget_other() {
     # FIXME: the logfile should be parsed using some awk-fu to summarize the errors.
     wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/ \
         --output-file=$WGET_LOGFILE
-    [ "$?" != 0 ] && wget_other_report
+    ret=$? ; edebug "wget return code: $ret"
+    [ "$ret" != 0 ] && wget_other_report
     [[ $DEBUGMODE -eq 1 ]] || rm $WGET_LOGFILE
 }
 
