@@ -26,7 +26,7 @@ PACKAGE_CACHE_OTHER=${PACKAGE_CACHE}/other/
 SYNOLOGY_CACHE=/srv/synology
 
 SYNOLOGY_USER=root
-SYNOLOGY_ADDR=10.10.8.9
+SYNOLOGY_ADDR=synology
 
 KIWIX_LOGFILE="/tmp/rsync_kiwix_$( date +%Y%m%d%H%M%S ).log"
 WGET_LOGFILE="/tmp/wget_other_$( date +%Y%m%d%H%M%S ).log"
