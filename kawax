@@ -116,7 +116,7 @@ extract_urls() {
         edebug "Getting URLs from ${thiscatalog}..."
         while read thisline ; do
             thisurl=$( echo $thisline | awk ' /url:/ { print $2 }' | tr -d [\'\"] )
-            if [[ "$thisurl" =~ "http://download.kiwix.org" ]] ; then
+            if [[ "$thisurl" =~ "//download.kiwix.org" ]] ; then
                 edebug "thisurl->kiwix-> $thisurl"
                 echo $thisurl >> $URLS_KIWIX
             elif [ -n "$thisurl" ] ; then
