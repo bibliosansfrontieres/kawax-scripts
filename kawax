@@ -33,7 +33,7 @@ WGET_LOGFILE="/tmp/wget_other_$( date +%Y%m%d%H%M%S ).log"
 ERRORS_MAILTO=${ERRORS_MAILTO:-it@bibliosansfrontieres.org}
 
 WGET_USERAGENT="Mirroring/catalog.ideascube.org"
-WGET_OPTIONS="--continue --timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
+WGET_OPTIONS="--timestamping --recursive --mirror --user-agent='$WGET_USERAGENT'"
 
 # long options translated from the kiwix mirroring one-liner
 RSYNC_OPTIONS="--compress --recursive --links --perms --times --devices --specials --delete"
