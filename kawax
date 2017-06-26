@@ -129,7 +129,7 @@ extract_urls() {
 
 rsync_synology() {
     # FIXME: test the link before
-    rsync --delete -av ${SYNOLOGY_USER}@${SYNOLOGY_ADDR}:'/volume1/Contenus-Educ/Gestion\ des\ contenus' ${SYNOLOGY_CACHE}/
+    rsync --delete -a ${SYNOLOGY_USER}@${SYNOLOGY_ADDR}:'/volume1/Contenus-Educ/Gestion\ des\ contenus' ${SYNOLOGY_CACHE}/
     chmod a+rX -R $SYNOLOGY_CACHE
 }
 
