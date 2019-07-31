@@ -43,7 +43,7 @@ RSYNC_OPTIONS="--compress --recursive --links --perms --times --devices --specia
 #
 
 show_usage() {
-    echo "Usage: $( basename $0 ) <action>
+    echo "Usage: $( basename "$0" ) <action>
 
 Actions:
 
@@ -58,15 +58,15 @@ Actions:
 }
 
 edebug() {
-    [[ $DEBUGMODE -eq 1 ]] && echo "[+] $@" >&2
+    [[ $DEBUGMODE -eq 1 ]] && echo "[+] $*" >&2
 }
 
 get_latest_zims_from_kiwix() {
-    for ENTRY in `rsync --recursive --list-only download.kiwix.org::download.kiwix.org/portable/ | \
-        grep ".zip" | grep -F -v '_nopic_' | tr -s ' ' | cut -d ' ' -f5 | sort -r` ; do
-        RADICAL=`echo $ENTRY | sed 's/_20[0-9][0-9]-[0-9][0-9]\.zim//g'`
+    for ENTRY in $( rsync --recursive --list-only download.kiwix.org::download.kiwix.org/portable/ | \
+        grep ".zip" | grep -F -v '_nopic_' | tr -s ' ' | cut -d ' ' -f5 | sort -r ) ; do
+    RADICAL=$( echo "$ENTRY" | sed 's/_20[0-9][0-9]-[0-9][0-9]\.zim//g' )
         if [[ $LAST != $RADICAL ]] ; then
-            echo $ENTRY
+            echo "$ENTRY"
             LAST=$RADICAL
         fi
     done
@@ -83,34 +83,34 @@ rsync_kiwix() {
     sed -i -e 's@^.*//download.kiwix.org/@@g' $URLS_KIWIX
     rsync $RSYNC_OPTIONS --files-from=$URLS_KIWIX \
         download.kiwix.org::download.kiwix.org/ ${PACKAGE_CACHE_KIWIX} \
-        --log-file=$KIWIX_LOGFILE
+        --log-file="$KIWIX_LOGFILE"
     rsync_kiwix_report
-    [[ $DEBUGMODE -eq 1 ]] || rm $KIWIX_LOGFILE
+    [[ $DEBUGMODE -eq 1 ]] || rm "$KIWIX_LOGFILE"
 }
 
 rsync_kiwix_report() {
     [ -z "$FROM_CRONJOB" ] && return
-    errors=$( awk ' /No such file or directory/ { print $6 } ' $KIWIX_LOGFILE \
+    errors=$( awk ' /No such file or directory/ { print $6 } ' "$KIWIX_LOGFILE" \
                 | tr -d '"' )
     [ ! -z "$errors" ] && {
         edebug "sending report... (\$FROM_CRONJOB is set to ${FROM_CRONJOB})"
-        echo "$errors" | mail -s 'kawax rsync_kiwix errors' $ERRORS_MAILTO
+        echo "$errors" | mail -s 'kawax rsync_kiwix errors' "$ERRORS_MAILTO"
     }
 }
 
 wget_other() {
     # FIXME: the logfile should be parsed using some awk-fu to summarize the errors.
     wget --input-file=$URLS_OTHER $WGET_OPTIONS -P ${PACKAGE_CACHE}/other/ \
-        --output-file=$WGET_LOGFILE --accept '*.zip'
+        --output-file="$WGET_LOGFILE" --accept '*.zip'
     ret=$? ; edebug "wget return code: $ret"
     [ "$ret" != 0 ] && wget_other_report
-    [[ $DEBUGMODE -eq 1 ]] || rm $WGET_LOGFILE
+    [[ $DEBUGMODE -eq 1 ]] || rm "$WGET_LOGFILE"
 }
 
 wget_other_report() {
     [ -z "$FROM_CRONJOB" ] && return
     edebug "sending report... (\$FROM_CRONJOB is set to ${FROM_CRONJOB})"
-    cat $WGET_LOGFILE | mail -s 'kawax wget_other errors' $ERRORS_MAILTO
+    mail -s 'kawax wget_other errors' "$ERRORS_MAILTO" < "$WGET_LOGFILE"
 }
 
 extract_urls() {
@@ -118,15 +118,15 @@ extract_urls() {
     for thiscatalog in $( find $CATALOGS_CACHE -type f -name '*.yml' ) ; do
         edebug "Getting URLs from ${thiscatalog}..."
         while read thisline ; do
-            thisurl=$( echo $thisline | awk ' /url:/ { print $2 }' | tr -d [\'\"] )
-            if [[ "$thisurl" =~ "//download.kiwix.org" ]] ; then
+            thisurl=$( echo "$thisline" | awk ' /url:/ { print $2 }' | tr -d \'\" )
+            if [[ "$thisurl" =~ //download.kiwix.org ]] ; then
                 edebug "thisurl->kiwix-> $thisurl"
-                echo $thisurl >> $URLS_KIWIX
+                echo "$thisurl" >> $URLS_KIWIX
             elif [ -n "$thisurl" ] ; then
                 edebug "thisurl->others-> $thisurl"
-                echo $thisurl >> $URLS_OTHER
+                echo "$thisurl" >> $URLS_OTHER
             fi
-        done < $thiscatalog
+        done < "$thiscatalog"
     done
 }
 
