@@ -19,7 +19,7 @@ CATALOGS=(
 URLS_KIWIX=/var/kawax/kiwix.rsync
 URLS_OTHER=/var/kawax/others.wget
 
-PACKAGE_CACHE=/srv/kawax
+PACKAGE_CACHE=/srv/others
 PACKAGE_CACHE_KIWIX=${PACKAGE_CACHE}/download.kiwix.org/
 PACKAGE_CACHE_OTHER=${PACKAGE_CACHE}/other/
 
