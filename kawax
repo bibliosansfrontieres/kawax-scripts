@@ -90,9 +90,12 @@ rsync_kiwix() {
 
 rsync_kiwix_report() {
     [ -z "$FROM_CRONJOB" ] && return
-    edebug "sending report... (\$FROM_CRONJOB is set to ${FROM_CRONJOB})"
-    awk ' /No such file or directory/ { print $6 } ' $KIWIX_LOGFILE \
-        | tr -d '"' | mail -s 'kawax rsync_kiwix errors' $ERRORS_MAILTO
+    errors=$( awk ' /No such file or directory/ { print $6 } ' $KIWIX_LOGFILE \
+                | tr -d '"' )
+    [ ! -z "$errors" ] && {
+        edebug "sending report... (\$FROM_CRONJOB is set to ${FROM_CRONJOB})"
+        echo "$errors" | mail -s 'kawax rsync_kiwix errors' $ERRORS_MAILTO
+    }
 }
 
 wget_other() {
