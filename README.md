@@ -6,6 +6,11 @@
 fileserver, downloads the latest ZIms from Kiwix.org and the other packages we
 included in our [catalogs](https://github.com/ideascube/catalog-i-o).
 
+Some additional helpers scripts:
+
+* `verify_olip_catalog.py`: OLIP catalog URL checker
+* `ppi-disk-report.sh`: hints about what happens/comes from the [Temps Modernes](https://gitlab.com/bibliosansfrontieres/tm/) galaxy
+
 ### Configuration
 
 Various paths and options can be tweaked at the beginning of the script.
